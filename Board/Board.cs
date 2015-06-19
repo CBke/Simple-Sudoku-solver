@@ -58,11 +58,11 @@ namespace Board
                 Items[x, y].SetValue(value);
                 Items[x, y].Checked = true;
 
-                for (int rx = 0; rx < 9; rx++)
+                for (int rx = Items.GetLowerBound(0); rx <= Items.GetUpperBound(0); rx++)
                     if (x != rx)
                         Items[rx, y].RemoveValue(value);
 
-                for (int ry = 0; ry < 9; ry++)
+                for (int ry = Items.GetLowerBound(1); ry <= Items.GetUpperBound(1); ry++)
                     if (y != ry)
                         Items[x, ry].RemoveValue(value);
 
@@ -89,9 +89,9 @@ namespace Board
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("=========");
-            for (int x = 0; x < 9; x++)
+            for (int x = Items.GetLowerBound(0); x <= Items.GetUpperBound(0); x++)
             {
-                for (int y = 0; y < 9; y++)
+                for (int y = Items.GetLowerBound(1); y <= Items.GetUpperBound(1); y++)
                 {
                     if (Items[x, y].Checked)
                         sb.Append(Items[x, y]);
@@ -112,8 +112,8 @@ namespace Board
             {
                 if (UnResolvable())
                     throw new Exception("UNRESOLVABLE!");
-                for (int x = 0; x < 9; x++)
-                    for (int y = 0; y < 9; y++)
+                for (int x = Items.GetLowerBound(0); x <= Items.GetUpperBound(0); x++)
+                    for (int y = Items.GetLowerBound(1); y <= Items.GetUpperBound(1); y++)
                     {
                         if (!Items[x, y].Checked && Items[x, y].PossibleValues.Count() == 1)
                             this[x, y] = Items[x, y].PossibleValues.FirstOrDefault();
@@ -121,7 +121,7 @@ namespace Board
                             foreach (var value in Items[x, y].PossibleValues)
                             {
                                 int found = 0;
-                                for (int rx = 0; rx < 9; rx++)
+                                for (int rx = Items.GetLowerBound(0); rx <= Items.GetUpperBound(0); rx++)
                                     if (Items[rx, y].PossibleValues.Contains(value))
                                         found++;
                                 if (found == 1)
@@ -132,7 +132,7 @@ namespace Board
                                 //uniq in row
                                 //uniq in colm
                                 found = 0;
-                                for (int ry = 0; ry < 9; ry++)
+                                for (int ry = Items.GetLowerBound(1); ry <= Items.GetUpperBound(1); ry++)
                                     if (Items[x, ry].PossibleValues.Contains(value))
                                         found++;
                                 if (found == 1)
